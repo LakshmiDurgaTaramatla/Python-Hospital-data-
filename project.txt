@@ -1,0 +1,152 @@
+create database project;
+use project;
+create table hospital(sno int,patient_name varchar(200),room int,problem varchar(200),doctor_name varchar(200),fees int);
+describe hospital;
+select* from hospital;
+ use project;
+Database changed
+mysql> select* from hospital;
++------+--------------+------+-------------------+-------------+--------+
+| sno  | patient_name | room | problem           | doctor_name | fees   |
++------+--------------+------+-------------------+-------------+--------+
+|    1 | suma         |  101 | Allergy           | Dr.Kavya    |   5000 |
+|    2 | pawan        |  102 | stomach infection | Dr.sailaja  |  40000 |
+|    3 | sirisha      |  103 | Thyroid           | Dr.mounika  |  30000 |
+|    4 | shyam        |  104 | Heart pain        | Dr.srinu    | 100000 |
++------+--------------+------+-------------------+-------------+--------+
+4 rows in set (0.00 sec)
+
+
+
+
+
+
+IN PYTHON:
+----------
+import pymysql.cursors
+connection=pymysql.connect(host='localhost',user='root',password='root',database='project',cursorclass=pymysql.cursors.DictCursor)
+with connection:
+    with connection.cursor() as cursor:
+        a="insert into hospital(`sno`,`patient_name`,`room`,`problem`,`doctor_name`,`fees`)values(1,'suma',101,'Allergy','Dr.Kavya',5000)"
+        b="insert into hospital(`sno`,`patient_name`,`room`,`problem`,`doctor_name`,`fees`)values(2,'pawan',102,'stomach infection','Dr.sailaja',40000)"
+        c="insert into hospital(`sno`,`patient_name`,`room`,`problem`,`doctor_name`,`fees`)values(3,'sirisha',103,'Thyroid','Dr.mounika',30000)"
+        d="insert into hospital(`sno`,`patient_name`,`room`,`problem`,`doctor_name`,`fees`)values(4,'shyam',104,'Heart pain','Dr.srinu',100000)"
+        sql="select* from hospital"
+        cursor.execute(a)
+        cursor.execute(b)
+        cursor.execute(c)
+        cursor.execute(d)
+        cursor.execute(sql)
+        x=cursor.fetchall()
+        
+        for y in x:
+            print(y)
+    connection.commit()
+
+output:
+-------
+{'sno': 1, 'patient_name': 'suma', 'room': 101, 'problem': 'Allergy', 'doctor_name': 'Dr.Kavya', 'fees': 5000}
+{'sno': 2, 'patient_name': 'pawan', 'room': 102, 'problem': 'stomach infection', 'doctor_name': 'Dr.sailaja', 'fees': 40000}
+{'sno': 3, 'patient_name': 'sirisha', 'room': 103, 'problem': 'Thyroid', 'doctor_name': 'Dr.mounika', 'fees': 30000}
+{'sno': 4, 'patient_name': 'shyam', 'room': 104, 'problem': 'Heart pain', 'doctor_name': 'Dr.srinu', 'fees': 100000}
+
+New Data to list:
+------------------
+import pymysql.cursors
+connection=pymysql.connect(host='localhost',user='root',password='root',database='project',cursorclass=pymysql.cursors.DictCursor)
+a=connection.cursor()
+no=int(input("Enter the sno "))
+name=input("enter the name ")
+rnum=int(input("enter room "))
+issue=input("enter the problem ")
+doctor=input("enter the doctor assigned ")
+bill=int(input("enter the amount paid "))
+sql="insert into hospital(sno,patient_name,room,problem,doctor_name,fees) values(%s,%s,%s,%s,%s,%s)"
+a.execute(sql,(no,name,rnum,issue,doctor,bill))
+print("Successful")
+connection.commit()
+connection.close()
+    
+output:
+-------
+
+ select* from hospital;
++------+--------------+------+-------------------+-------------+--------+
+| sno  | patient_name | room | problem           | doctor_name | fees   |
++------+--------------+------+-------------------+-------------+--------+
+|    1 | suma         |  101 | Allergy           | Dr.Kavya    |   5000 |
+|    2 | pawan        |  102 | stomach infection | Dr.sailaja  |  40000 |
+|    3 | sirisha      |  103 | Thyroid           | Dr.mounika  |  30000 |
+|    4 | shyam        |  104 | Heart pain        | Dr.srinu    | 100000 |
+|    5 | ananya       |  105 | migraine          | Dr.sheela   |  20000 |
++------+--------------+------+-------------------+-------------+--------+
+5 rows in set (0.00 sec)
+
+updating value:
+----------------
+
+import pymysql.cursors
+connection=pymysql.connect(host='localhost',user='root',password='root',database='project',cursorclass=pymysql.cursors.DictCursor)
+
+z=connection.cursor()
+up="update hospital set fees=10000 where patient_name='ananya'"
+z.execute(up)
+connection.commit()
+connection.close()
+
+output:
+--------
+
+mysql> select* from hospital;
++------+--------------+------+-------------------+-------------+--------+
+| sno  | patient_name | room | problem           | doctor_name | fees   |
++------+--------------+------+-------------------+-------------+--------+
+|    1 | suma         |  101 | Allergy           | Dr.Kavya    |   5000 |
+|    2 | pawan        |  102 | stomach infection | Dr.sailaja  |  40000 |
+|    3 | sirisha      |  103 | Thyroid           | Dr.mounika  |  30000 |
+|    4 | shyam        |  104 | Heart pain        | Dr.srinu    | 100000 |
+|    5 | ananya       |  105 | hand fracture     | Dr.srujana  |  50000 |
++------+--------------+------+-------------------+-------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select* from hospital;
++------+--------------+------+-------------------+-------------+--------+
+| sno  | patient_name | room | problem           | doctor_name | fees   |
++------+--------------+------+-------------------+-------------+--------+
+|    1 | suma         |  101 | Allergy           | Dr.Kavya    |   5000 |
+|    2 | pawan        |  102 | stomach infection | Dr.sailaja  |  40000 |
+|    3 | sirisha      |  103 | Thyroid           | Dr.mounika  |  30000 |
+|    4 | shyam        |  104 | Heart pain        | Dr.srinu    | 100000 |
+|    5 | ananya       |  105 | hand fracture     | Dr.srujana  |  10000 |
++------+--------------+------+-------------------+-------------+--------+
+5 rows in set (0.00 sec)
+
+DELETING THE DATA:
+---------------------
+
+import pymysql.cursors
+connection=pymysql.connect(host='localhost',user='root',password='root',database='project',cursorclass=pymysql.cursors.DictCursor)
+
+
+f=connection.cursor()
+dele="delete from hospital where sno=5"
+f.execute(dele)
+connection.commit()
+connection.close()
+
+OUTPUT:
+-------
+ select* from hospital;
++------+--------------+------+-------------------+-------------+-------+
+| sno  | patient_name | room | problem           | doctor_name | fees  |
++------+--------------+------+-------------------+-------------+-------+
+|    1 | suma         |  101 | Allergy           | Dr.Kavya    |  5000 |
+|    2 | pawan        |  102 | stomach infection | Dr.sailaja  | 40000 |
+|    3 | sirisha      |  103 | Thyroid           | Dr.mounika  | 30000 |
+|    4 | shyam        |  104 | Heart pain        | Dr.srinu    | 10000 |
++------+--------------+------+-------------------+-------------+-------+
+4 rows in set (0.00 sec)
+
+
+
+
